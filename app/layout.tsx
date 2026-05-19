@@ -13,10 +13,46 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "FerrumForge Studio - Desarrollo Web",
-  description: "Desarrollador Web Freelance especializado en la creación de experiencias digitales a medida.",
+  title: "Ferrum Forge Studio | Desarrollo Web a Medida",
+  description:
+    "Agencia de desarrollo web en Bilbao. Creamos aplicaciones web con Next.js, React y TypeScript. Diseño UI/UX premium + ingeniería de software. Solicita presupuesto.",
+  keywords: [
+    "desarrollo web bilbao",
+    "agencia web freelance",
+    "next.js developer",
+    "diseño web a medida",
+    "ferrum forge",
+  ],
+  authors: [{ name: "Pablo Hierro", url: "https://ferrumforge.dev" }],
   icons: {
-    icon: "/logo1.png", // Asume que tu logo se llama 'logo.png' y está en la carpeta 'public'
+    icon: "/logo1.png",
+  },
+  openGraph: {
+    title: "Ferrum Forge Studio | Desarrollo Web de Alto Rendimiento",
+    description:
+      "Ingeniería y diseño web a medida. Sin plantillas. Sin intermediarios. Presupuesto gratis.",
+    url: "https://ferrumforge.dev", // ← cambia por tu dominio real
+    siteName: "Ferrum Forge Studio",
+    images: [
+      {
+        url: "https://ferrumforge.dev/og-image.png", // ← imagen 1200×630px en /public
+        width: 1200,
+        height: 630,
+        alt: "Ferrum Forge Studio - Desarrollo Web",
+      },
+    ],
+    locale: "es_ES",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Ferrum Forge Studio | Desarrollo Web a Medida",
+    description: "Aplicaciones web con Next.js, React y diseño UI/UX premium.",
+    images: ["https://ferrumforge.dev/og-image.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
   },
 };
 
