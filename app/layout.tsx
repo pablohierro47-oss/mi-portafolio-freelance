@@ -13,10 +13,10 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "NovaStack",
+  title: "FerrumForge Studio - Desarrollo Web",
   description: "Desarrollador Web Freelance especializado en la creación de experiencias digitales a medida.",
   icons: {
-    icon: "/logo.png", // Asume que tu logo se llama 'logo.png' y está en la carpeta 'public'
+    icon: "/logo1.png", // Asume que tu logo se llama 'logo.png' y está en la carpeta 'public'
   },
 };
 

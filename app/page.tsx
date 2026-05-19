@@ -10,21 +10,21 @@ export default function Home() {
   const [state, formAction, isPending] = useActionState(submitContact, null);
 
   return (
-    <main className="min-h-screen bg-slate-950 text-slate-300 font-sans selection:bg-blue-600 selection:text-white">
+    <main className="min-h-screen bg-slate-950 text-slate-300 font-sans selection:bg-orange-600 selection:text-white">
       
       {/* HEADER / NAVBAR */}
       <header className="fixed top-0 w-full z-50 bg-slate-950/80 backdrop-blur-md border-b border-slate-900">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
           <div className="text-2xl font-black text-white tracking-tighter flex items-center gap-2">
-            <span className="text-blue-600 text-3xl">N</span>
-            NOVASTACK
+            <span className="text-orange-600 text-3xl">FF</span>
+            FERRUM FORGE STUDIO
           </div>
           <nav className="hidden md:flex gap-8 text-sm font-medium">
-            <Link href="#servicios" className="hover:text-blue-500 transition-colors">Servicios</Link>
-            <Link href="#proyectos" className="hover:text-blue-500 transition-colors">Proyectos</Link>
-            <Link href="#proceso" className="hover:text-blue-500 transition-colors">Proceso</Link>
+            <Link href="#servicios" className="hover:text-orange-500 transition-colors">Servicios</Link>
+            <Link href="#proyectos" className="hover:text-orange-500 transition-colors">Proyectos</Link>
+            <Link href="#proceso" className="hover:text-orange-500 transition-colors">Proceso</Link>
           </nav>
-          <Link href="#contacto" className="hidden md:inline-flex bg-blue-600 text-white px-5 py-2.5 rounded-full text-sm font-bold transition-all hover:bg-blue-500 hover:scale-105">
+          <Link href="#contacto" className="hidden md:inline-flex bg-orange-600 text-white px-5 py-2.5 rounded-full text-sm font-bold transition-all hover:bg-orange-500 hover:scale-105">
             Pedir Presupuesto
           </Link>
         </div>
@@ -34,20 +34,20 @@ export default function Home() {
       <section className="relative flex flex-col items-center justify-center min-h-screen px-6 text-center pt-20">
         <div className="absolute inset-0 bg-[radial-gradient(theme(colors.slate.900)_1px,transparent_1px)] [background-size:24px_24px] opacity-30"></div>
         <div className="relative z-10 max-w-5xl mx-auto">
-          <span className="text-blue-500 font-bold tracking-widest uppercase text-sm mb-6 block">
+          <span className="text-orange-500 font-bold tracking-widest uppercase text-sm mb-6 block">
             Agencia de Desarrollo Web
           </span>
           <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight leading-tight mb-6 text-white">
             Ingeniería y Diseño Web de <br className="hidden md:block" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-400">Alto Rendimiento</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-amber-400">Alto Rendimiento</span>
           </h1>
           <p className="text-lg md:text-xl text-slate-400 mb-10 max-w-2xl mx-auto leading-relaxed">
-            En NovaStack creamos aplicaciones web a medida que impulsan tu negocio, combinando una solidez técnica extrema con una estética premium.
+            En Ferrum Forge creamos aplicaciones web a medida que impulsan tu negocio, combinando una solidez técnica extrema con una estética premium.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Link 
               href="#contacto" 
-              className="bg-blue-600 text-white px-8 py-4 rounded-full font-bold transition-all duration-300 hover:bg-blue-500 hover:-translate-y-1 hover:shadow-[0_0_30px_-5px_rgba(37,99,235,0.6)]"
+              className="bg-orange-600 text-white px-8 py-4 rounded-full font-bold transition-all duration-300 hover:bg-orange-500 hover:-translate-y-1 hover:shadow-[0_0_30px_-5px_rgba(234,88,12,0.6)]"
             >
               Comenzar Proyecto
             </Link>
@@ -79,8 +79,8 @@ export default function Home() {
           {/* FOTO PROFESIONAL */}
           <div className="aspect-square bg-slate-900 rounded-3xl border border-slate-800 relative overflow-hidden">
             <Image
-            src="/pablo-hierro.png"
-            alt="Pablo Hierro - NovaStack"
+            src="/logo5.1.png"
+            alt="Pablo Hierro - Ferrum Forge"
             fill
             sizes="(max-width: 768px) 100vw, 50vw"
             className="object-cover object-top"
@@ -88,9 +88,9 @@ export default function Home() {
           />
           </div>
           <div>
-            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">El balance perfecto entre <span className="text-blue-500">Ingeniería y Diseño</span></h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">El balance perfecto entre <span className="text-orange-500">Ingeniería y Diseño</span></h2>
             <p className="text-slate-400 text-lg leading-relaxed mb-6">
-              Soy Pablo, el motor detrás de NovaStack. Mi formación en <strong>Ingeniería de Software</strong> me permite construir arquitecturas web robustas, rápidas y seguras. Pero el código por sí solo no vende.
+              Soy Pablo, el motor detrás de Ferrum Forge. Mi formación en <strong>Ingeniería de Software</strong> me permite construir arquitecturas web robustas, rápidas y seguras. Pero el código por sí solo no vende.
             </p>
             <p className="text-slate-400 text-lg leading-relaxed mb-8">
               Por eso, lo combino con una obsesión por el diseño UI/UX. No hago "plantillas"; diseño interfaces personalizadas que capturan la esencia de tu marca y guían al usuario directo hacia la conversión.
@@ -121,7 +121,7 @@ export default function Home() {
                 GitHub
               </a>
               <a 
-                href="https://linkedin.com/in/pablohierro" 
+                href="https://www.linkedin.com/in/pablo-hierro-dev" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 bg-slate-900 border border-slate-800 px-4 py-2.5 rounded-xl text-slate-400 hover:text-white hover:border-slate-600 transition-all duration-300"
@@ -144,23 +144,23 @@ export default function Home() {
             <p className="text-slate-400 max-w-2xl mx-auto text-lg">Soluciones integrales para que tu negocio domine el entorno digital.</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-slate-950 p-8 rounded-2xl shadow-sm border border-slate-800 transition-all duration-300 hover:-translate-y-2 hover:border-blue-600 group">
-              <div className="w-14 h-14 bg-blue-600/20 rounded-xl flex items-center justify-center mb-6 group-hover:bg-blue-600 transition-colors duration-300">
-                <span className="text-blue-500 group-hover:text-white text-2xl transition-colors">🎨</span>
+            <div className="bg-slate-950 p-8 rounded-2xl shadow-sm border border-slate-800 transition-all duration-300 hover:-translate-y-2 hover:border-orange-600 group">
+              <div className="w-14 h-14 bg-orange-600/20 rounded-xl flex items-center justify-center mb-6 group-hover:bg-orange-600 transition-colors duration-300">
+                <span className="text-orange-500 group-hover:text-white text-2xl transition-colors">🎨</span>
               </div>
               <h3 className="text-xl font-bold mb-3 text-white">Diseño UI/UX</h3>
               <p className="text-slate-400 leading-relaxed">Interfaces modernas, intuitivas y centradas en el usuario para garantizar la mejor experiencia de navegación y conversiones.</p>
             </div>
-            <div className="bg-slate-950 p-8 rounded-2xl shadow-sm border border-slate-800 transition-all duration-300 hover:-translate-y-2 hover:border-blue-600 group">
-              <div className="w-14 h-14 bg-blue-600/20 rounded-xl flex items-center justify-center mb-6 group-hover:bg-blue-600 transition-colors duration-300">
-                <span className="text-blue-500 group-hover:text-white text-2xl transition-colors">💻</span>
+            <div className="bg-slate-950 p-8 rounded-2xl shadow-sm border border-slate-800 transition-all duration-300 hover:-translate-y-2 hover:border-orange-600 group">
+              <div className="w-14 h-14 bg-orange-600/20 rounded-xl flex items-center justify-center mb-6 group-hover:bg-orange-600 transition-colors duration-300">
+                <span className="text-orange-500 group-hover:text-white text-2xl transition-colors">💻</span>
               </div>
               <h3 className="text-xl font-bold mb-3 text-white">Desarrollo a Medida</h3>
               <p className="text-slate-400 leading-relaxed">Aplicaciones web robustas utilizando las últimas tecnologías (React, Next.js) asegurando un rendimiento impecable.</p>
             </div>
-            <div className="bg-slate-950 p-8 rounded-2xl shadow-sm border border-slate-800 transition-all duration-300 hover:-translate-y-2 hover:border-blue-600 group">
-              <div className="w-14 h-14 bg-blue-600/20 rounded-xl flex items-center justify-center mb-6 group-hover:bg-blue-600 transition-colors duration-300">
-                <span className="text-blue-500 group-hover:text-white text-2xl transition-colors">⚙️</span>
+            <div className="bg-slate-950 p-8 rounded-2xl shadow-sm border border-slate-800 transition-all duration-300 hover:-translate-y-2 hover:border-orange-600 group">
+              <div className="w-14 h-14 bg-orange-600/20 rounded-xl flex items-center justify-center mb-6 group-hover:bg-orange-600 transition-colors duration-300">
+                <span className="text-orange-500 group-hover:text-white text-2xl transition-colors">⚙️</span>
               </div>
               <h3 className="text-xl font-bold mb-3 text-white">Mantenimiento</h3>
               <p className="text-slate-400 leading-relaxed">Soporte técnico continuo, optimización SEO y actualizaciones de seguridad para que tu web nunca se caiga.</p>
@@ -180,7 +180,7 @@ export default function Home() {
             className="text-center mb-16"
           >
             <h2 className="text-3xl md:text-5xl font-black text-white tracking-tight mb-4">
-              Ingeniería <span className="text-blue-500">Real</span>
+              Ingeniería <span className="text-orange-500">Real</span>
             </h2>
             <p className="text-slate-400 max-w-2xl mx-auto text-lg">
               No solo hacemos webs bonitas. Desarrollamos arquitecturas complejas, bases de datos eficientes y algoritmos a bajo nivel.
@@ -195,10 +195,10 @@ export default function Home() {
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
               viewport={{ once: true }}
-              className="group bg-slate-900/80 border border-slate-800 rounded-3xl p-8 hover:border-blue-500/50 hover:bg-slate-900 transition-all duration-300 shadow-xl"
+              className="group bg-slate-900/80 border border-slate-800 rounded-3xl p-8 hover:border-orange-500/50 hover:bg-slate-900 transition-all duration-300 shadow-xl"
             >
-              <div className="h-12 w-12 bg-blue-500/10 rounded-2xl flex items-center justify-center mb-6 border border-blue-500/20 group-hover:scale-110 transition-transform">
-                <svg className="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="h-12 w-12 bg-orange-500/10 rounded-2xl flex items-center justify-center mb-6 border border-orange-500/20 group-hover:scale-110 transition-transform">
+                <svg className="w-6 h-6 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" />
                 </svg>
               </div>
@@ -207,9 +207,9 @@ export default function Home() {
                 Sistema de gestión robusto desarrollado con una arquitectura puro Cliente-Servidor. Implementación de conexiones por sockets y gestión de base de datos relacional SQLite a bajo nivel para garantizar un rendimiento extremo sin intermediarios.
               </p>
               <div className="flex flex-wrap gap-2 mb-6">
-                <span className="bg-slate-950 border border-slate-800 text-blue-400 px-3 py-1 rounded-full text-xs font-bold tracking-wider">C/C++</span>
-                <span className="bg-slate-950 border border-slate-800 text-blue-400 px-3 py-1 rounded-full text-xs font-bold tracking-wider">SQLite</span>
-                <span className="bg-slate-950 border border-slate-800 text-blue-400 px-3 py-1 rounded-full text-xs font-bold tracking-wider">Sockets TCP/IP</span>
+                <span className="bg-slate-950 border border-slate-800 text-orange-400 px-3 py-1 rounded-full text-xs font-bold tracking-wider">C/C++</span>
+                <span className="bg-slate-950 border border-slate-800 text-orange-400 px-3 py-1 rounded-full text-xs font-bold tracking-wider">SQLite</span>
+                <span className="bg-slate-950 border border-slate-800 text-orange-400 px-3 py-1 rounded-full text-xs font-bold tracking-wider">Sockets TCP/IP</span>
               </div>
             </motion.div>
 
@@ -250,7 +250,7 @@ export default function Home() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
               </div>
-              <h3 className="text-2xl font-bold text-white mb-3">NovaStack: Portafolio Freelance</h3>
+              <h3 className="text-2xl font-bold text-white mb-3">Ferrum Forge: Portafolio Freelance</h3>
               <p className="text-slate-400 mb-6 leading-relaxed">
                 Este mismo sitio web. Diseñado y desarrollado desde cero con Next.js 14, App Router y Tailwind CSS. Incluye gestión de leads integrada, animaciones con Framer Motion y despliegue optimizado en Vercel.
               </p>
@@ -287,7 +287,7 @@ export default function Home() {
               </div>
               <h3 className="text-2xl font-bold text-white mb-3">FiestasWeb: Plataforma de Eventos</h3>
               <p className="text-slate-400 mb-6 leading-relaxed">
-                Plataforma web para la gestión y promoción de eventos y fiestas. Diseño orientado a la conversión con gestión de reservas, landing pages personalizadas y optimización para móvil.
+                Plataforma web para la gestión y promotion de eventos y fiestas. Diseño orientado a la conversión con gestión de reservas, landing pages personalizadas y optimización para móvil.
               </p>
               <div className="flex flex-wrap gap-2 mb-6">
                 <span className="bg-slate-950 border border-slate-800 text-amber-400 px-3 py-1 rounded-full text-xs font-bold tracking-wider">React</span>
@@ -320,22 +320,22 @@ export default function Home() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             <div className="text-center">
-              <div className="w-16 h-16 bg-slate-950 text-blue-500 font-black text-2xl rounded-2xl flex items-center justify-center mx-auto mb-4 border border-blue-600/30 shadow-[0_0_15px_rgba(37,99,235,0.2)]">1</div>
+              <div className="w-16 h-16 bg-slate-950 text-orange-500 font-black text-2xl rounded-2xl flex items-center justify-center mx-auto mb-4 border border-orange-600/30 shadow-[0_0_15px_rgba(234,88,12,0.2)]">1</div>
               <h3 className="text-xl font-bold mb-2 text-white">Descubrimiento</h3>
               <p className="text-slate-400">Análisis de objetivos, competencia y definición de la arquitectura.</p>
             </div>
             <div className="text-center">
-              <div className="w-16 h-16 bg-slate-950 text-blue-500 font-black text-2xl rounded-2xl flex items-center justify-center mx-auto mb-4 border border-blue-600/30 shadow-[0_0_15px_rgba(37,99,235,0.2)]">2</div>
+              <div className="w-16 h-16 bg-slate-950 text-orange-500 font-black text-2xl rounded-2xl flex items-center justify-center mx-auto mb-4 border border-orange-600/30 shadow-[0_0_15px_rgba(234,88,12,0.2)]">2</div>
               <h3 className="text-xl font-bold mb-2 text-white">Diseño UI/UX</h3>
               <p className="text-slate-400">Creación de prototipos visuales antes de escribir una sola línea de código.</p>
             </div>
             <div className="text-center">
-              <div className="w-16 h-16 bg-slate-950 text-blue-500 font-black text-2xl rounded-2xl flex items-center justify-center mx-auto mb-4 border border-blue-600/30 shadow-[0_0_15px_rgba(37,99,235,0.2)]">3</div>
+              <div className="w-16 h-16 bg-slate-950 text-orange-500 font-black text-2xl rounded-2xl flex items-center justify-center mx-auto mb-4 border border-orange-600/30 shadow-[0_0_15px_rgba(234,88,12,0.2)]">3</div>
               <h3 className="text-xl font-bold mb-2 text-white">Desarrollo</h3>
               <p className="text-slate-400">Programación a medida con tecnologías de alto rendimiento.</p>
             </div>
             <div className="text-center">
-              <div className="w-16 h-16 bg-slate-950 text-blue-500 font-black text-2xl rounded-2xl flex items-center justify-center mx-auto mb-4 border border-blue-600/30 shadow-[0_0_15px_rgba(37,99,235,0.2)]">4</div>
+              <div className="w-16 h-16 bg-slate-950 text-orange-500 font-black text-2xl rounded-2xl flex items-center justify-center mx-auto mb-4 border border-orange-600/30 shadow-[0_0_15px_rgba(234,88,12,0.2)]">4</div>
               <h3 className="text-xl font-bold mb-2 text-white">Lanzamiento</h3>
               <p className="text-slate-400">Pruebas de estrés, despliegue en servidores y optimización SEO.</p>
             </div>
@@ -349,37 +349,37 @@ export default function Home() {
           <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">Preguntas Frecuentes</h2>
         </div>
         <div className="space-y-4">
-          <details className="group bg-slate-900 border border-slate-800 rounded-2xl p-6 cursor-pointer open:border-blue-600/50 transition-colors">
+          <details className="group bg-slate-900 border border-slate-800 rounded-2xl p-6 cursor-pointer open:border-orange-600/50 transition-colors">
             <summary className="text-lg font-bold text-white outline-none flex justify-between items-center">
               ¿Cuánto tiempo tardas en desarrollar una web?
-              <span className="text-blue-500 group-open:rotate-180 transition-transform">▼</span>
+              <span className="text-orange-500 group-open:rotate-180 transition-transform">▼</span>
             </summary>
             <p className="mt-4 text-slate-400 leading-relaxed">
               Depende de la complejidad. Una Landing Page corporativa suele estar lista en 2-3 semanas. Proyectos más complejos pueden llevar entre 1 y 2 meses. Siempre establecemos plazos cerrados desde el día 1.
             </p>
           </details>
-          <details className="group bg-slate-900 border border-slate-800 rounded-2xl p-6 cursor-pointer open:border-blue-600/50 transition-colors">
+          <details className="group bg-slate-900 border border-slate-800 rounded-2xl p-6 cursor-pointer open:border-orange-600/50 transition-colors">
             <summary className="text-lg font-bold text-white outline-none flex justify-between items-center">
               ¿Usas WordPress o plantillas prefabricadas?
-              <span className="text-blue-500 group-open:rotate-180 transition-transform">▼</span>
+              <span className="text-orange-500 group-open:rotate-180 transition-transform">▼</span>
             </summary>
             <p className="mt-4 text-slate-400 leading-relaxed">
               No. Todo el desarrollo se hace a medida utilizando Next.js y React. Esto garantiza que tu web sea extremadamente rápida, segura ante hackeos y totalmente exclusiva para tu marca.
             </p>
           </details>
-          <details className="group bg-slate-900 border border-slate-800 rounded-2xl p-6 cursor-pointer open:border-blue-600/50 transition-colors">
+          <details className="group bg-slate-900 border border-slate-800 rounded-2xl p-6 cursor-pointer open:border-orange-600/50 transition-colors">
             <summary className="text-lg font-bold text-white outline-none flex justify-between items-center">
               ¿Haces tiendas online / e-commerce?
-              <span className="text-blue-500 group-open:rotate-180 transition-transform">▼</span>
+              <span className="text-orange-500 group-open:rotate-180 transition-transform">▼</span>
             </summary>
             <p className="mt-4 text-slate-400 leading-relaxed">
               Sí. Integro pasarelas de pago como Stripe o PayPal, gestión de inventario y catálogos de productos. Todo a medida, sin depender de plataformas de terceros que limiten tu crecimiento.
             </p>
           </details>
-          <details className="group bg-slate-900 border border-slate-800 rounded-2xl p-6 cursor-pointer open:border-blue-600/50 transition-colors">
+          <details className="group bg-slate-900 border border-slate-800 rounded-2xl p-6 cursor-pointer open:border-orange-600/50 transition-colors">
             <summary className="text-lg font-bold text-white outline-none flex justify-between items-center">
               ¿El hosting y el dominio están incluidos?
-              <span className="text-blue-500 group-open:rotate-180 transition-transform">▼</span>
+              <span className="text-orange-500 group-open:rotate-180 transition-transform">▼</span>
             </summary>
             <p className="mt-4 text-slate-400 leading-relaxed">
               El desarrollo no incluye hosting ni dominio por defecto, pero te asesoro y configuro todo en plataformas como Vercel o AWS. El coste suele ser mínimo (desde 0€/mes en Vercel para proyectos pequeños).
@@ -390,24 +390,28 @@ export default function Home() {
 
       {/* CONTACT SECTION */}
       <section id="contacto" className="py-24 px-6 max-w-5xl mx-auto">
-        <div className="bg-slate-900 border border-slate-800 rounded-3xl p-10 md:p-16 shadow-[0_0_40px_rgba(37,99,235,0.1)] relative overflow-hidden flex flex-col md:flex-row gap-12">
+        <div className="bg-slate-900 border border-slate-800 rounded-3xl p-10 md:p-16 shadow-[0_0_40px_rgba(234,88,12,0.1)] relative overflow-hidden flex flex-col md:flex-row gap-12">
           
           {/* Lado izquierdo */}
           <div className="md:w-1/2 flex flex-col justify-center relative z-10">
             <h2 className="text-4xl md:text-5xl font-black mb-6 text-white leading-tight">
-              ¿Hablamos de tu <br/><span className="text-blue-500">próximo proyecto?</span>
+              ¿Hablamos de tu <br/><span className="text-orange-500">próximo proyecto?</span>
             </h2>
             <p className="text-slate-400 text-lg mb-8">
               Cuéntame qué necesitas. Analizaremos tu caso sin compromiso y te daré una solución tecnológica real para impulsar tu negocio.
             </p>
             <div className="space-y-4">
               <div className="flex items-center gap-4 text-slate-300">
-                <span className="w-10 h-10 bg-slate-950 rounded-full flex items-center justify-center border border-slate-800 text-blue-500">✉️</span>
+                <span className="w-10 h-10 bg-slate-950 rounded-full flex items-center justify-center border border-slate-800 text-orange-500">✉️</span>
                 pablohierro47@gmail.com
               </div>
               <div className="flex items-center gap-4 text-slate-300">
-                <span className="w-10 h-10 bg-slate-950 rounded-full flex items-center justify-center border border-slate-800 text-blue-500">📍</span>
-                Bilbao / Cantabria
+                <span className="w-10 h-10 bg-slate-950 rounded-full flex items-center justify-center border border-slate-800 text-orange-500">📞</span>
+                +34 612 345 678
+              </div>
+              <div className="flex items-center gap-4 text-slate-300">
+                <span className="w-10 h-10 bg-slate-950 rounded-full flex items-center justify-center border border-slate-800 text-orange-500">📍</span>
+                Bilbao (Bizkaia) / Castro-Urdiales (Cantabria)
               </div>
             </div>
           </div>
@@ -433,7 +437,7 @@ export default function Home() {
                   type="text" 
                   id="name" 
                   name="name"
-                  className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors"
+                  className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors"
                   placeholder="Ej. Carlos Martínez"
                   required
                 />
@@ -444,7 +448,7 @@ export default function Home() {
                   type="email" 
                   id="email" 
                   name="email"
-                  className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors"
+                  className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors"
                   placeholder="hola@tuempresa.com"
                   required
                 />
@@ -455,7 +459,7 @@ export default function Home() {
                   id="message" 
                   name="message"
                   rows={4}
-                  className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors resize-none"
+                  className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors resize-none"
                   placeholder="Me gustaría desarrollar una web para..."
                   required
                 ></textarea>
@@ -464,15 +468,15 @@ export default function Home() {
               <button 
                 type="submit" 
                 disabled={isPending}
-                className="w-full bg-blue-600 text-white font-bold py-4 rounded-xl transition-all duration-300 hover:bg-blue-500 hover:shadow-[0_0_20px_-5px_rgba(37,99,235,0.5)] disabled:opacity-70"
+                className="w-full bg-orange-600 text-white font-bold py-4 rounded-xl transition-all duration-300 hover:bg-orange-500 hover:shadow-[0_0_20px_-5px_rgba(234,88,12,0.5)] disabled:opacity-70"
               >
                 {isPending ? 'Enviando...' : 'Enviar Mensaje'}
               </button>
 
               <div className="mt-6 flex flex-col sm:flex-row gap-4 justify-center items-center text-sm">
                 <span className="text-slate-500">O si lo prefieres:</span>
-                <a href="https://wa.me/34000000000" target="_blank" rel="noopener noreferrer" className="text-blue-400 font-medium underline underline-offset-4 hover:text-blue-300 transition-colors">WhatsApp</a>
-                <a href="mailto:pablohierro47@gmail.com" className="text-blue-400 font-medium underline underline-offset-4 hover:text-blue-300 transition-colors">Email</a>
+                <a href="https://wa.me/34620251864" target="_blank" rel="noopener noreferrer" className="text-orange-400 font-medium underline underline-offset-4 hover:text-orange-300 transition-colors">WhatsApp</a>
+                <a href="mailto:ferrumforge26@gmail.com" className="text-orange-400 font-medium underline underline-offset-4 hover:text-orange-300 transition-colors">Email</a>
               </div>
             </form>
           </div>
@@ -483,13 +487,13 @@ export default function Home() {
       {/* FOOTER */}
       <footer className="border-t border-slate-900 py-10 text-center text-slate-600 text-sm">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center px-6">
-          <p>© {new Date().getFullYear()} NovaStack. Todos los derechos reservados.</p>
+          <p>© {new Date().getFullYear()} Ferrum Forge. Todos los derechos reservados.</p>
           <div className="flex gap-6 mt-4 md:mt-0 items-center">
             {/* ENLACE SECRETO AL PANEL ADMIN */}
-            <Link href="/admin" className="w-2 h-2 rounded-full bg-slate-800 hover:bg-blue-500 transition-colors" aria-label="Admin Login"></Link>
+            <Link href="/admin" className="w-2 h-2 rounded-full bg-slate-800 hover:bg-orange-500 transition-colors" aria-label="Admin Login"></Link>
             
             <a href="https://github.com/pablohierro47-oss" target="_blank" rel="noopener noreferrer" className="hover:text-slate-400 transition-colors">GitHub</a>
-            <a href="https://linkedin.com/in/pablohierro" target="_blank" rel="noopener noreferrer" className="hover:text-slate-400 transition-colors">LinkedIn</a>
+            <a href="https://www.linkedin.com/in/pablo-hierro-dev" target="_blank" rel="noopener noreferrer" className="hover:text-slate-400 transition-colors">LinkedIn</a>
             <Link href="#" className="hover:text-slate-400 transition-colors">Aviso Legal</Link>
             <Link href="#" className="hover:text-slate-400 transition-colors">Política de Privacidad</Link>
           </div>
