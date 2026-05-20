@@ -1,8 +1,7 @@
 "use client";
 
-import Link from "next/link";
 import Image from "next/image";
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, useMotionValue, useSpring, AnimatePresence, useScroll } from "framer-motion";
 import { useActionState, useRef, useEffect, useState } from "react";
 import { submitContact } from "./actions/contact";
 import ForgeLoader from "./components/ForgeLoader"; // Importamos el cargador
@@ -39,12 +38,63 @@ function StatCard({ value, suffix, label }: { value: number; suffix: string; lab
   );
 }
 
+// ─── DATOS ESTÁTICOS (CONTENIDO) ─────────────────────────────────────────────
+const FAQS = [
+  { q: "¿Cuánto tiempo tardas en desarrollar una web?", a: "Depende de la complejidad. Una Landing Page corporativa suele estar lista en 2-3 semanas. Proyectos más complejos pueden llevar entre 1 y 2 meses. Siempre establecemos plazos cerrados desde el día 1." },
+  { q: "¿Usas WordPress o plantillas prefabricadas?", a: "No. Todo el desarrollo se hace a medida utilizando Next.js y React. Esto garantiza que tu web sea extremadamente rápida, segura ante hackeos y totalmente exclusiva para tu marca." },
+  { q: "¿Haces tiendas online / e-commerce?", a: "Sí. Integro pasarelas de pago como Stripe o PayPal, gestión de inventario y catálogos de productos. Todo a medida, sin depender de plataformas de terceros que limiten tu crecimiento." },
+  { q: "¿El hosting y el dominio están incluidos?", a: "El desarrollo no incluye hosting ni dominio por defecto, pero te asesoro y configuro todo en plataformas como Vercel o AWS. El coste suele ser mínimo (desde 0€/mes en Vercel para proyectos pequeños)." },
+  { q: "¿Qué pasa si quiero cambios después de la entrega?", a: "Los planes incluyen un periodo de revisiones gratuitas. Pasado ese tiempo, ofrezco planes de mantenimiento mensuales o presupuesto por hora para cambios puntuales. Siempre con respuesta en menos de 24h." },
+];
+
 export default function Home() {
   const [state, formAction, isPending] = useActionState(submitContact, null);
+  const [showCopiedTooltip, setShowCopiedTooltip] = useState(false);
   
+  const handleShare = async () => {
+    const shareData = {
+      title: "Ferrum Forge Studio | Desarrollo Web a Medida",
+      text: "Ingeniería y diseño web a medida. Sin plantillas. Sin intermediarios.",
+      url: window.location.href,
+    };
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+      } else {
+        await navigator.clipboard.writeText(window.location.href);
+        setShowCopiedTooltip(true);
+        setTimeout(() => {
+          setShowCopiedTooltip(false);
+        }, 2500);
+      }
+    } catch (error) {
+      console.error("Error al compartir:", error);
+      alert("No se pudo compartir o copiar el enlace.");
+    }
+  };
+
   // ─── ESTADOS PARA CARGADOR Y CURSOR ───────────────────────────────────────
   const [loading, setLoading] = useState(true);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+  // Usamos useMotionValue en lugar de useState para evitar re-renderizar
+  // todo el componente Home cada vez que se mueve el ratón.
+  const mouseX = useMotionValue(-100);
+  const mouseY = useMotionValue(-100);
+  const sparkX = useSpring(mouseX, { stiffness: 500, damping: 28, mass: 2 });
+  const sparkY = useSpring(mouseY, { stiffness: 500, damping: 28, mass: 2 });
+  const coreX = useSpring(mouseX, { stiffness: 1000, damping: 40, mass: 1 });
+  const coreY = useSpring(mouseY, { stiffness: 1000, damping: 40, mass: 1 });
+
+  // ─── SCROLL PROGRESS & BACK TO TOP ───────────────────────────────────────
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setShowScrollTop(window.scrollY > 400);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   // Efecto para ocultar el cargador tras 2 segundos
   useEffect(() => {
@@ -55,11 +105,12 @@ export default function Home() {
   // Efecto para rastrear el ratón (Cursor de chispa)
   useEffect(() => {
     const updateMousePosition = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
+      mouseX.set(e.clientX);
+      mouseY.set(e.clientY);
     };
     window.addEventListener("mousemove", updateMousePosition);
     return () => window.removeEventListener("mousemove", updateMousePosition);
-  }, []);
+  }, [mouseX, mouseY]);
 
   // Si está cargando, mostramos la pantalla de forja
   if (loading) return <ForgeLoader />;
@@ -67,33 +118,63 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-slate-950 text-slate-300 font-sans selection:bg-orange-600 selection:text-white">
 
+      {/* ── PROGRESS BAR ────────────────────────────────────────────────────── */}
+      <motion.div className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-orange-600 to-amber-400 origin-left z-[100]" style={{ scaleX }} />
+
       {/* ── CUSTOM CURSOR (Chispa) Solo en Desktop ──────────────────────────── */}
       <motion.div
         className="hidden md:block fixed top-0 left-0 w-8 h-8 bg-orange-500/30 rounded-full pointer-events-none z-[9999] blur-md mix-blend-screen"
-        animate={{ x: mousePosition.x - 16, y: mousePosition.y - 16 }}
-        transition={{ type: "spring", stiffness: 500, damping: 28, mass: 2 }}
+        style={{ x: sparkX, y: sparkY, translateX: "-50%", translateY: "-50%" }}
       />
       <motion.div
         className="hidden md:block fixed top-0 left-0 w-2 h-2 bg-white rounded-full pointer-events-none z-[10000] shadow-[0_0_10px_2px_rgba(234,88,12,0.8)]"
-        animate={{ x: mousePosition.x - 4, y: mousePosition.y - 4 }}
-        transition={{ type: "spring", stiffness: 1000, damping: 40, mass: 1 }}
+        style={{ x: coreX, y: coreY, translateX: "-50%", translateY: "-50%" }}
       />
 
-      {/* ── FLOATING WHATSAPP BUTTON ────────────────────────────────────────── */}
-      <a
-        href="https://wa.me/34620251864"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Contactar por WhatsApp"
-        className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-emerald-500 hover:bg-emerald-400 text-white rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(34,197,94,0.5)] hover:shadow-[0_0_30px_rgba(34,197,94,0.7)] transition-all duration-300 hover:scale-110"
+      {/* ── TOOLTIP "COPIADO" PARA EL BOTÓN DE COMPARTIR ────────────────────── */}
+      <AnimatePresence>
+        {showCopiedTooltip && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 10 }}
+            transition={{ duration: 0.2 }}
+            className="fixed bottom-24 right-6 z-50 bg-slate-800 text-white text-sm font-semibold px-4 py-2 rounded-lg shadow-lg"
+          >
+            ¡Enlace copiado!
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ── FLOATING SHARE BUTTON ─────────────────────────────────────────── */}
+      <button
+        onClick={handleShare}
+        aria-label="Compartir esta página"
+        className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-orange-600 hover:bg-orange-500 text-white rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(234,88,12,0.5)] hover:shadow-[0_0_30px_rgba(234,88,12,0.7)] transition-all duration-300 hover:scale-110"
       >
-        <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+        <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12s-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.368a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" />
         </svg>
-      </a>
+      </button>
+
+      {/* ── BACK TO TOP BUTTON ────────────────────────────────────────────── */}
+      <AnimatePresence>
+        {showScrollTop && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.5, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.5, y: 20 }}
+            className="fixed bottom-24 right-6 z-40"
+          >
+            <button onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} aria-label="Volver arriba" className="w-14 h-14 bg-slate-800 hover:bg-slate-700 text-white rounded-full flex items-center justify-center shadow-lg transition-all hover:scale-110 border border-slate-700">
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7"/></svg>
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* ── HEADER / NAVBAR ─────────────────────────────────────────────────── */}
-      <header className="fixed top-0 w-full z-50 bg-slate-950/80 backdrop-blur-md border-b border-slate-900">
+      <header className="fixed top-0 w-full z-50 bg-slate-950/70 backdrop-blur-xl border-b border-slate-900 shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
           <div className="text-2xl font-black text-white tracking-tighter flex items-center gap-2">
             <span className="text-orange-600 text-3xl">FF</span>
@@ -115,17 +196,23 @@ export default function Home() {
       <section className="relative flex flex-col items-center justify-center min-h-screen px-6 text-center pt-20">
         <div className="absolute inset-0 bg-[radial-gradient(theme(colors.slate.900)_1px,transparent_1px)] [background-size:24px_24px] opacity-30"></div>
         <div className="relative z-10 max-w-5xl mx-auto">
-          <span className="text-orange-500 font-bold tracking-widest uppercase text-sm mb-6 block">
-            Agencia de Desarrollo Web
-          </span>
-          <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight leading-tight mb-6 text-white">
-            Ingeniería y Diseño Web de <br className="hidden md:block" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-amber-400">Alto Rendimiento</span>
-          </h1>
-          <p className="text-lg md:text-xl text-slate-400 mb-10 max-w-2xl mx-auto leading-relaxed">
-            En Ferrum Forge creamos aplicaciones web a medida que impulsan tu negocio, combinando una solidez técnica extrema con una estética premium.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.1 }}>
+            <span className="text-orange-500 font-bold tracking-widest uppercase text-sm mb-6 block">
+              Agencia de Desarrollo Web
+            </span>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }}>
+            <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight leading-tight mb-6 text-white">
+              Ingeniería y Diseño Web de <br className="hidden md:block" />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-amber-400 drop-shadow-[0_0_15px_rgba(234,88,12,0.3)]">Alto Rendimiento</span>
+            </h1>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.3 }}>
+            <p className="text-lg md:text-xl text-slate-400 mb-10 max-w-2xl mx-auto leading-relaxed">
+              En Ferrum Forge creamos aplicaciones web a medida que impulsan tu negocio, combinando una solidez técnica extrema con una estética premium.
+            </p>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.4 }} className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <a
               href="#contacto"
               className="bg-orange-600 text-white px-8 py-4 rounded-full font-bold transition-all duration-300 hover:bg-orange-500 hover:-translate-y-1 hover:shadow-[0_0_30px_-5px_rgba(234,88,12,0.6)]"
@@ -138,7 +225,7 @@ export default function Home() {
             >
               Ver Casos de Éxito
             </a>
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -187,7 +274,7 @@ export default function Home() {
               fill
               sizes="(max-width: 768px) 100vw, 50vw"
               className="object-cover object-top"
-              priority
+              loading="lazy"
             />
           </div>
           <div>
@@ -662,13 +749,7 @@ export default function Home() {
           <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">Preguntas Frecuentes</h2>
         </div>
         <div className="space-y-4">
-          {[
-            { q: "¿Cuánto tiempo tardas en desarrollar una web?", a: "Depende de la complejidad. Una Landing Page corporativa suele estar lista en 2-3 semanas. Proyectos más complejos pueden llevar entre 1 y 2 meses. Siempre establecemos plazos cerrados desde el día 1." },
-            { q: "¿Usas WordPress o plantillas prefabricadas?", a: "No. Todo el desarrollo se hace a medida utilizando Next.js y React. Esto garantiza que tu web sea extremadamente rápida, segura ante hackeos y totalmente exclusiva para tu marca." },
-            { q: "¿Haces tiendas online / e-commerce?", a: "Sí. Integro pasarelas de pago como Stripe o PayPal, gestión de inventario y catálogos de productos. Todo a medida, sin depender de plataformas de terceros que limiten tu crecimiento." },
-            { q: "¿El hosting y el dominio están incluidos?", a: "El desarrollo no incluye hosting ni dominio por defecto, pero te asesoro y configuro todo en plataformas como Vercel o AWS. El coste suele ser mínimo (desde 0€/mes en Vercel para proyectos pequeños)." },
-            { q: "¿Qué pasa si quiero cambios después de la entrega?", a: "Los planes incluyen un periodo de revisiones gratuitas. Pasado ese tiempo, ofrezco planes de mantenimiento mensuales o presupuesto por hora para cambios puntuales. Siempre con respuesta en menos de 24h." },
-          ].map((faq, i) => (
+              {FAQS.map((faq, i) => (
             <details key={i} className="group bg-slate-900 border border-slate-800 rounded-2xl p-6 cursor-pointer open:border-orange-600/50 transition-colors">
               <summary className="text-lg font-bold text-white outline-none flex justify-between items-center">
                 {faq.q}
@@ -696,10 +777,6 @@ export default function Home() {
                 pablohierro47@gmail.com
               </div>
               <div className="flex items-center gap-4 text-slate-300">
-                <span className="w-10 h-10 bg-slate-950 rounded-full flex items-center justify-center border border-slate-800 text-orange-500">📞</span>
-                +34 612 345 678
-              </div>
-              <div className="flex items-center gap-4 text-slate-300">
                 <span className="w-10 h-10 bg-slate-950 rounded-full flex items-center justify-center border border-slate-800 text-orange-500">📍</span>
                 Bilbao (Bizkaia) / Castro-Urdiales (Cantabria)
               </div>
@@ -720,7 +797,16 @@ export default function Home() {
               </div>
               <div>
                 <label htmlFor="email" className="block text-sm font-medium text-slate-400 mb-2">Correo electrónico</label>
-                <input type="email" id="email" name="email" className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors" placeholder="hola@tuempresa.com" required />
+                <input 
+                  type="email" 
+                  id="email" 
+                  name="email" 
+                  className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors peer invalid:border-red-500/50 invalid:focus:border-red-500 invalid:focus:ring-red-500" 
+                  placeholder="hola@tuempresa.com" 
+                  required 
+                  pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$"
+                />
+                <p className="mt-2 invisible peer-invalid:visible text-red-400 text-xs">Por favor, introduce un correo válido.</p>
               </div>
               <div>
                 <label htmlFor="project" className="block text-sm font-medium text-slate-400 mb-2">Tipo de proyecto</label>
@@ -742,8 +828,7 @@ export default function Home() {
               </button>
               <div className="mt-6 flex flex-col sm:flex-row gap-4 justify-center items-center text-sm">
                 <span className="text-slate-500">O si lo prefieres:</span>
-                <a href="https://wa.me/34612345678" target="_blank" rel="noopener noreferrer" className="text-orange-400 font-medium underline underline-offset-4 hover:text-orange-300 transition-colors">WhatsApp</a>
-                <a href="mailto:ferrumforge26@gmail.com" className="text-orange-400 font-medium underline underline-offset-4 hover:text-orange-300 transition-colors">Email</a>
+                <a href="mailto:pablohierro47@gmail.com" className="text-orange-400 font-medium underline underline-offset-4 hover:text-orange-300 transition-colors">Enviar un Email</a>
               </div>
             </form>
           </div>
@@ -755,7 +840,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center px-6">
           <p>© {new Date().getFullYear()} Ferrum Forge. Todos los derechos reservados.</p>
           <div className="flex gap-6 mt-4 md:mt-0 items-center">
-            <Link href="/admin" className="w-2 h-2 rounded-full bg-slate-800 hover:bg-orange-500 transition-colors" aria-label="Admin Login"></Link>
+            <a href="/admin" className="w-2 h-2 rounded-full bg-slate-800 hover:bg-orange-500 transition-colors" aria-label="Admin Login"></a>
             <a href="https://github.com/pablohierro47-oss" target="_blank" rel="noopener noreferrer" className="hover:text-slate-400 transition-colors">GitHub</a>
             <a href="https://www.linkedin.com/in/pablo-hierro-dev" target="_blank" rel="noopener noreferrer" className="hover:text-slate-400 transition-colors">LinkedIn</a>
             <a href="#" className="hover:text-slate-400 transition-colors">Aviso Legal</a>

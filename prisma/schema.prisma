@@ -3,21 +3,37 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model ContactMessage {
-  id        String   @id @default(cuid())
-  name      String
-  email     String
-  message   String
-  createdAt DateTime @default(now())
-  isRead    Boolean  @default(false)
+  id          String   @id @default(cuid())
+  
+  name        String   @db.VarChar(100)
+  email       String   @db.VarChar(255)
+  message     String   @db.Text
+  
+  project     String?  @db.VarChar(50) @map("project_type") // Guardamos el select del form
+  isRead      Boolean  @default(false) @map("is_read")
+  
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at") // Actualizado automáticamente por Prisma
+
+  @@index([email])
+  @@index([isRead])
+  @@index([createdAt])
+  
+  @@map("contact_messages")
 }
 
 model Admin {
-  id       String @id @default(cuid())
-  username String @unique
-  password String
+  id        String   @id @default(cuid())
+  username  String   @unique @db.VarChar(50)
+  password  String   @db.Text // Texto largo para los hashes de encriptación (bcrypt)
+  
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("admins")
 }

@@ -56,6 +56,22 @@ export const metadata: Metadata = {
   },
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "name": "Ferrum Forge Studio",
+  "image": "https://ferrumforge.dev/og-image.png",
+  "description": "Agencia de desarrollo web en Bilbao. Creamos aplicaciones web con Next.js, React y TypeScript. Diseño UI/UX premium + ingeniería de software.",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Bilbao",
+    "addressRegion": "Bizkaia",
+    "addressCountry": "ES"
+  },
+  "url": "https://ferrumforge.dev",
+  "priceRange": "$$$"
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -65,7 +81,11 @@ export default function RootLayout({
     <html
       lang="es"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      data-scroll-behavior="smooth"
     >
+      <head>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      </head>
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
   );
