@@ -37,3 +37,18 @@ model Admin {
 
   @@map("admins")
 }
+
+model Testimonial {
+  id          String   @id @default(cuid())
+  name        String   @db.VarChar(100)
+  role        String   @db.VarChar(100)
+  avatar      String   @db.VarChar(5)
+  message     String   @db.Text
+  stars       Int      @default(5)
+  isApproved  Boolean  @default(false) @map("is_approved")
+  
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("testimonials")
+}

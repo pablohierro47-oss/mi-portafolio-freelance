@@ -4,6 +4,7 @@ import Image from "next/image";
 import { motion, useInView, useMotionValue, useSpring, AnimatePresence, useScroll } from "framer-motion";
 import { useActionState, useRef, useEffect, useState } from "react";
 import { submitContact } from "./actions/contact";
+import { getApprovedTestimonials } from "./actions/testimonials";
 import ForgeLoader from "./components/ForgeLoader"; // Importamos el cargador
 
 // ─── ANIMATED COUNTER HOOK ────────────────────────────────────────────────────
@@ -47,6 +48,15 @@ const FAQS = [
   { q: "¿Qué pasa si quiero cambios después de la entrega?", a: "Los planes incluyen un periodo de revisiones gratuitas. Pasado ese tiempo, ofrezco planes de mantenimiento mensuales o presupuesto por hora para cambios puntuales. Siempre con respuesta en menos de 24h." },
 ];
 
+type Testimonial = {
+  id: string;
+  name: string;
+  role: string;
+  avatar: string;
+  message: string;
+  stars: number;
+};
+
 export default function Home() {
   const [state, formAction, isPending] = useActionState(submitContact, null);
   const [showCopiedTooltip, setShowCopiedTooltip] = useState(false);
@@ -89,6 +99,19 @@ export default function Home() {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
   const [showScrollTop, setShowScrollTop] = useState(false);
+
+  // ─── ESTADOS DE TESTIMONIOS ─────────────────────────────────────────────
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+  const [loadingTestimonials, setLoadingTestimonials] = useState(true);
+
+  useEffect(() => {
+    async function fetchTestimonials() {
+      const res = await getApprovedTestimonials();
+      if (res.success) setTestimonials(res.data);
+      setLoadingTestimonials(false);
+    }
+    fetchTestimonials();
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => setShowScrollTop(window.scrollY > 400);
@@ -687,35 +710,53 @@ export default function Home() {
             <p className="text-slate-400 text-lg">Resultados reales de personas reales.</p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              { name: "Carlos M.", role: "CEO, Taller AutoRepair Bilbao", avatar: "CM", text: "Pablo entregó nuestra web corporativa en tiempo récord. El resultado superó todas las expectativas: moderna, rápida y ya estamos recibiendo leads a través del formulario.", stars: 5 },
-              { name: "Laura G.", role: "Fundadora, FiestasWeb", avatar: "LG", text: "Buscaba a alguien que entendiera tanto de diseño como de código. Pablo es exactamente eso. Comunicación perfecta, cero plantillas y el proyecto acabó antes del plazo.", stars: 5 },
-              { name: "Mikel A.", role: "Profesor Universidad de Deusto", avatar: "MA", text: "Tuve la oportunidad de ver el trabajo de Pablo en proyectos universitarios complejos. Su nivel técnico en arquitecturas de software es sobresaliente.", stars: 5 },
-            ].map((t, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: i * 0.15 }} viewport={{ once: true }}
-                className="bg-slate-950 border border-slate-800 rounded-2xl p-8 hover:border-orange-600/40 transition-colors duration-300"
-              >
-                <div className="flex gap-1 mb-4">
-                  {Array.from({ length: t.stars }).map((_, si) => (
-                    <svg key={si} className="w-4 h-4 text-amber-400 fill-current" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                  ))}
-                </div>
-                <p className="text-slate-400 leading-relaxed mb-6 text-sm italic">"{t.text}"</p>
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-orange-600/20 border border-orange-600/30 rounded-full flex items-center justify-center text-orange-400 font-black text-xs">
-                    {t.avatar}
-                  </div>
-                  <div>
-                    <p className="text-white font-bold text-sm">{t.name}</p>
-                    <p className="text-slate-500 text-xs">{t.role}</p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
+        {loadingTestimonials ? (
+          <div className="flex justify-center items-center py-12">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange-500"></div>
           </div>
+        ) : testimonials.length === 0 ? (
+          <div className="text-center py-12 border-2 border-dashed border-slate-800 rounded-3xl bg-slate-900/30">
+            <span className="text-4xl block mb-4">💬</span>
+            <p className="text-slate-500 font-medium text-lg">Aún no hay testimonios públicos.</p>
+            <p className="text-slate-600 text-sm mt-2">¡Sé el primero en dejar tu reseña trabajando juntos!</p>
+            <a href="/dejar-resena" className="inline-block mt-6 bg-orange-600/20 text-orange-500 border border-orange-600/30 px-6 py-2.5 rounded-full font-bold hover:bg-orange-600 hover:text-white transition-all">
+              Escribir una reseña
+            </a>
+          </div>
+        ) : (
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {testimonials.map((t, i) => (
+                <motion.div
+                  key={t.id}
+                  initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: i * 0.15 }} viewport={{ once: true }}
+                  className="bg-slate-950 border border-slate-800 rounded-2xl p-8 hover:border-orange-600/40 transition-colors duration-300 flex flex-col"
+                >
+                  <div className="flex gap-1 mb-4">
+                    {Array.from({ length: t.stars }).map((_, si) => (
+                      <svg key={si} className="w-4 h-4 text-amber-400 fill-current" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    ))}
+                  </div>
+                  <p className="text-slate-400 leading-relaxed mb-6 text-sm italic flex-grow">"{t.message}"</p>
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-orange-600/20 border border-orange-600/30 rounded-full flex items-center justify-center text-orange-400 font-black text-xs shrink-0">
+                      {t.avatar}
+                    </div>
+                    <div>
+                      <p className="text-white font-bold text-sm">{t.name}</p>
+                      <p className="text-slate-500 text-xs">{t.role}</p>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+            <div className="text-center mt-12">
+              <a href="/dejar-resena" className="inline-block bg-slate-900 border border-slate-800 text-slate-300 px-6 py-3 rounded-full font-bold hover:bg-slate-800 hover:text-white transition-colors">
+                ¿Has trabajado conmigo? Deja tu reseña
+              </a>
+            </div>
+          </>
+        )}
         </div>
       </section>
 
@@ -791,6 +832,8 @@ export default function Home() {
               {state?.error && (
                 <div className="bg-red-500/20 border border-red-400 text-red-100 px-4 py-3 rounded-xl text-center font-medium">{state.error}</div>
               )}
+          {!state?.success && (
+            <>
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-slate-400 mb-2">Nombre completo</label>
                 <input type="text" id="name" name="name" className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors" placeholder="Ej. Carlos Martínez" required />
@@ -826,6 +869,8 @@ export default function Home() {
               <button type="submit" disabled={isPending} className="w-full bg-orange-600 text-white font-bold py-4 rounded-xl transition-all duration-300 hover:bg-orange-500 hover:shadow-[0_0_20px_-5px_rgba(234,88,12,0.5)] disabled:opacity-70">
                 {isPending ? 'Enviando...' : 'Enviar Mensaje'}
               </button>
+            </>
+          )}
               <div className="mt-6 flex flex-col sm:flex-row gap-4 justify-center items-center text-sm">
                 <span className="text-slate-500">O si lo prefieres:</span>
                 <a href="mailto:pablohierro47@gmail.com" className="text-orange-400 font-medium underline underline-offset-4 hover:text-orange-300 transition-colors">Enviar un Email</a>
