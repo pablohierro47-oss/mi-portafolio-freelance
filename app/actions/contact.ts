@@ -8,7 +8,13 @@ import * as React from "react";
 
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
-export async function submitContact(prevState: any, formData: FormData) {
+export type ContactFormState = {
+  success?: boolean;
+  error?: string;
+  message?: string;
+} | null;
+
+export async function submitContact(prevState: ContactFormState, formData: FormData): Promise<ContactFormState> {
   try {
     const name = formData.get("name") as string;
     const email = formData.get("email") as string;

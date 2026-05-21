@@ -306,7 +306,7 @@ export default function Home() {
               Soy Pablo, el motor detrás de Ferrum Forge. Mi formación en <strong>Ingeniería de Software</strong> me permite construir arquitecturas web robustas, rápidas y seguras. Pero el código por sí solo no vende.
             </p>
             <p className="text-slate-400 text-lg leading-relaxed mb-8">
-              Por eso, lo combino con una obsesión por el diseño UI/UX. No hago "plantillas"; diseño interfaces personalizadas que capturan la esencia de tu marca y guían al usuario directo hacia la conversión.
+              Por eso, lo combino con una obsesión por el diseño UI/UX. No hago &quot;plantillas&quot;; diseño interfaces personalizadas que capturan la esencia de tu marca y guían al usuario directo hacia la conversión.
             </p>
             <div className="flex gap-4 mb-8">
               <div className="flex flex-col">
@@ -737,7 +737,7 @@ export default function Home() {
                       <svg key={si} className="w-4 h-4 text-amber-400 fill-current" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
                     ))}
                   </div>
-                  <p className="text-slate-400 leading-relaxed mb-6 text-sm italic flex-grow">"{t.message}"</p>
+                  <p className="text-slate-400 leading-relaxed mb-6 text-sm italic flex-grow">&quot;{t.message}&quot;</p>
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 bg-orange-600/20 border border-orange-600/30 rounded-full flex items-center justify-center text-orange-400 font-black text-xs shrink-0">
                       {t.avatar}
