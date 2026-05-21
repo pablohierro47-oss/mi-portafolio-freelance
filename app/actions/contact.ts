@@ -6,7 +6,7 @@ import AutoReply from "../emails/AutoReply";
 import AdminAlert from "../emails/AdminAlert";
 import * as React from "react";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
 export async function submitContact(prevState: any, formData: FormData) {
   try {
@@ -29,7 +29,7 @@ export async function submitContact(prevState: any, formData: FormData) {
     });
 
     // Enviar correos transaccionales concurrentemente
-    if (process.env.RESEND_API_KEY) {
+    if (resend) {
       try {
         await Promise.allSettled([
           resend.emails.send({
