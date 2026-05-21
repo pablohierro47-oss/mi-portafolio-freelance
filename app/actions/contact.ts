@@ -1,12 +1,19 @@
 "use server";
 
 import prisma from "../../prisma";
+import { Resend } from "resend";
+import AutoReply from "../emails/AutoReply";
+import AdminAlert from "../emails/AdminAlert";
+import * as React from "react";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function submitContact(prevState: any, formData: FormData) {
   try {
     const name = formData.get("name") as string;
     const email = formData.get("email") as string;
     const message = formData.get("message") as string;
+    const project = formData.get("project") as string || "No especificado";
 
     if (!name || !email || !message) {
       return { error: "Por favor, rellena todos los campos." };
@@ -17,8 +24,31 @@ export async function submitContact(prevState: any, formData: FormData) {
         name,
         email,
         message,
+        project,
       },
     });
+
+    // Enviar correos transaccionales concurrentemente
+    if (process.env.RESEND_API_KEY) {
+      try {
+        await Promise.allSettled([
+          resend.emails.send({
+            from: "Ferrum Forge Studio <onboarding@resend.dev>", 
+            to: [email], // ⚠️ IMPORTANTE: En modo pruebas, este 'email' debe ser TU Gmail.
+            subject: "He recibido tu solicitud - Ferrum Forge Studio",
+            react: React.createElement(AutoReply, { name, project }),
+          }),
+          resend.emails.send({
+            from: "Notificaciones <onboarding@resend.dev>",
+            to: ["pablohierro47@gmail.com"],
+            subject: `🔥 Nuevo Lead: ${project} - ${name}`,
+            react: React.createElement(AdminAlert, { name, email, project, message }),
+          })
+        ]);
+      } catch (emailError) {
+        console.error("Error interno aislando la creación de correos:", emailError);
+      }
+    }
 
     return { success: true, message: "¡Mensaje enviado con éxito! Te responderé lo antes posible." };
   } catch (error) {

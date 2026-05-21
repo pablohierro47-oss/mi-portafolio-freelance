@@ -2,6 +2,11 @@
 
 import prisma from "../../prisma";
 import { revalidatePath } from "next/cache";
+import { Resend } from "resend";
+import ReviewAlert from "../emails/ReviewAlert";
+import * as React from "react";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 // 1. Obtener testimonios (Solo los aprobados)
 export async function getApprovedTestimonials() {
@@ -37,6 +42,20 @@ export async function submitTestimonial(prevState: any, formData: FormData) {
     });
 
     revalidatePath("/admin"); // Notifica al dashboard al instante
+
+    // Enviar alerta por correo al administrador
+    if (process.env.RESEND_API_KEY) {
+      try {
+        await resend.emails.send({
+          from: "Notificaciones <onboarding@resend.dev>",
+          to: ["pablohierro47@gmail.com"],
+          subject: `⭐ Nueva Reseña Pendiente: ${name}`,
+          react: React.createElement(ReviewAlert, { name, role, stars, message }),
+        });
+      } catch (emailError) {
+        console.error("Error al enviar email de reseña:", emailError);
+      }
+    }
 
     return { success: true, message: "¡Gracias por tu testimonio! Será revisado antes de publicarse." };
   } catch (error) {
