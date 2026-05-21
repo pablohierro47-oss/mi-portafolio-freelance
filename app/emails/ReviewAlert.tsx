@@ -12,7 +12,7 @@ export default function ReviewAlert({ name, role, stars, message }: ReviewAlertP
   return (
     <Html>
       <Head />
-      <Preview>Nueva reseña de {name} ({stars} estrellas)</Preview>
+      <Preview>{`Nueva reseña de ${name} (${stars} estrellas)`}</Preview>
       <Tailwind>
         <Body className="bg-slate-100 font-sans">
           <Container className="max-w-[600px] mx-auto py-8">
